@@ -15,6 +15,13 @@ server:
 spring:
   profiles: Dev
     #服务注册中心实例的主机名
+  #thymeleaf start
+  thymeleaf:
+      cache: false
+      mode: LEGACYHTML5
+      encoding: UTF-8
+      #content-type: text/html
+  #thymeleaf endd
 
 eureka:
   instance:
@@ -33,6 +40,13 @@ server:
 spring:
   profiles: Test
     #服务注册中心实例的主机名
+    #thymeleaf start
+  thymeleaf:
+      cache: false
+      mode: LEGACYHTML5
+      encoding: UTF-8
+      #content-type: text/html
+  #thymeleaf endd
 
 eureka:
   instance:
@@ -51,6 +65,14 @@ server:
 spring:
   profiles: Prd
     #服务注册中心实例的主机名
+  #thymeleaf start
+  thymeleaf:
+      cache: false
+      mode: LEGACYHTML5
+      encoding: UTF-8
+      #content-type: text/html
+  #thymeleaf endd
+
 eureka:
   instance:
     hostname: localhost
