@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>后台管理</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/common/pagination.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
+    <link href="/css/admin/admin_message_board_title.css" rel="stylesheet"/>
+    <link href="/plugins/DataTables-1.10.15/media/css/dataTables.bootstrap4.css" rel="stylesheet"/>
+    <link href="/plugins/DataTables-1.10.15/media/css/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/plugins/DataTables-1.10.15/media/css/dataTables.jqueryui.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+
+    <!--<script type="text/javascript" language="javascript" src="DataTables-1.8.1/media/js/jquery.js"></script>-->
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.bootstrap4.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.foundation.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.material.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.semanticui.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="/plugins/DataTables-1.10.15/media/js/dataTables.uikit.js">
+    </script><script type="text/javascript" language="javascript"
+            src="/js/common/admin_message_board_title.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            /*    初始化     */
+            setAdminMenuActive($("#currentType").val())
+
+            $(".nav-stacked li").on("click", function () {
+                $("#currentType").val($(this).attr("id"));
+                setAdminMenuActive($("#currentType").val())
+            })
+
+            var table = $("#editTable").dataTable({
+                "bPaginate": false, //开关，是否显示分页器
+                "bInfo": false, //开关，是否显示表格的一些信息
+                "bFilter": false, //开关，是否启用客户端过滤器
+//                "sDom": "<>lfrtip<>",
+//                "bAutoWith": false,
+//                "bDeferRender": false,
+                "bJQueryUI": false, //开关，是否启用JQueryUI风格
+//                "bLengthChange": true, //开关，是否显示每页大小的下拉框
+//                "bProcessing": true,
+//                "bScrollInfinite": false,
+//                "sScrollY": "800px", //是否开启垂直滚动，以及指定滚动区域大小,可设值：'disabled','2000px'
+                "bSort": true, //开关，是否启用各列具有按列排序的功能
+//                "bSortClasses": true,
+                "bStateSave": true, //开关，是否打开客户端状态记录功能。这个数据是记录在cookies中的，打开了这个记录后，即使刷新一次页面，或重新打开浏览器，之前的状态都是保存下来的- ------当值为true时aoColumnDefs不能隐藏列
+//                "sScrollX": "50%", //是否开启水平滚动，以及指定滚动区域大小,可设值：'disabled','2000%'
+//                "aaSorting": [[0, "asc"]],
+
+//                "aoColumnDefs": [{ "bVisible": false, "aTargets": [0]}]//隐藏列
+//                "sDom": '<"H"if>t<"F"if>',
+                "bAutoWidth": false, //自适应宽度
+//                "aaSorting": [[1, "asc"]],
+                "sPaginationType": "full_numbers",
+                "processing": true,
+                "serverSide": false,
+                "ajax": {
+                    url: "/messageBoard/getMessageBoardTitleMessages",
+                    type: "POST",
+                    dataType: "json",//数据返回类型：xml、json、script
+                    cache: false,
+                    dataSrc: 'data'
+                },
+                "columns": [
+                    {
+                        "data": "id", sortable: false, sClass: "hidden-class", render: function (data, type, row) {
+                        data = transforDataToNull(data)
+                        return '<input type="hidden" class="form-control" value="' + data + '" />';
+                    }
+                    }, {
+                        "data": "content", sortable: false, render: function (data, type, row) {
+                            data = transforDataToNull(data)
+                            return '<input type="text" class="form-control" value="' + data + '" />';
+                        }
+                    },
+                    {
+                        "data": "orderNum", sortable: false, render: function (data, type, row) {
+                        data = transforDataToNull(data)
+                        return '<input type="text" class="form-control" value="' + data + '" />';
+                    }
+                    },
+                    {
+                        "data": "operator", sortable: false, render: function (data, type, row) {
+                        return '<button type="button" class="btn btn-default btn-sm">删除</button>';
+                    }
+                    },
+                    {
+                        "data": "status", sortable: false, render: function (data, type, row) {
+                        return '';
+                    }
+                    },
+                    {
+                        "data": "flag", sortable: false, sClass: "hidden-class", render: function (data, type, row) {
+                        return '<input type="hidden" class="form-control" value="Y" />';
+                    }
+                    },
+                ],
+                "oLanguage": {
+                    "sProcessing": "正在加载中......",
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "对不起，查询不到相关数据！",
+                    "sEmptyTable": "表中无数据存在！",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
+                    "sSearch": "搜索",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "末页"
+                    }
+                }
+            });
+
+            $("tbody").delegate("td>button", "click", function () {
+                var id = $(this).parent().prev().prev().prev().children().val();
+                $(this).parent().parent().toggleClass('selected');
+                var table = $('#editTable').DataTable();
+                /*<![CDATA[*/
+                if (id != null && id != undefined && id != '') {
+
+                    deleteRow($(this), table);
+
+                } else {
+
+                    table.row('.selected').remove().draw(false);
+
+                }
+
+                /*]]>*/
+            })
+
+            $("#addRow").on("click", function () {
+
+                addRow(table);
+
+            })
+            $("#saveBtn").on("click", function () {
+
+                $("#editTable tbody tr").each(function () {
+
+                    var id = $(this).children("td:first").children().val();
+                    $(this).children("td:first").next().next().next().next().children().remove();
+                    /*<![CDATA[*/
+                    if (id != null && id != undefined && id != '') {
+
+                        updateRow($(this));
+
+                    } else {
+
+                        insertRow($(this));
+
+                    }
+                    /*]]>*/
+                })
+
+
+            })
+
+        })
+    </script>
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+
+    <div th:include="common/header"></div>
+
+    <div class="row set-margin-top">
+        <div class="col-md-2">
+            <div class="set-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" th:id="${AdminMenu.getLinkMatching()}"
+                        th:each="AdminMenu,AdminMenuStatus : ${AdminMenus.data}"><a
+                            th:href="@{${AdminMenu.getInterlinkage()}}"
+                            th:text="${AdminMenu.getMenuItemName()}">Home</a></li>
+                    <!--<li role="presentation" class="active"><a href="#">Profile</a></li>
+                    <li role="presentation"><a href="#">Messages</a></li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="content set-margin-top">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="editTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>内容</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                            <th>状态</th>
+                            <th>是否存在</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <button id="addRow" type="button" class="btn btn-primary btn-sm set-right">增加一行</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary btn-sm set-right">保存</button>
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="currentType" name="currentType" th:value="${CurrentType}">
+<div th:include="common/footer"></div>
+
+</body>
+</html>

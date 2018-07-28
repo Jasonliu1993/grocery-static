@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>更新分享</title>
+
+    <!-- Bootstrap -->
+    <!--<link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>-->
+    <link href="/css/common/pagination.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
+    <link href="/css/admin/admin_update_photography_detail.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link href="/plugins/bootstrap-fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>-->
+    <link href="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/locales/fr.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/locales/es.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/themes/fa/theme.js" type="text/javascript"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>-->
+    <script src="/js/bootstrap-3.3.7/js/bootstrap.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+            var baseURL = window.location.host;
+            var protocol = window.location.protocol;
+
+            $(document).ready(function () {
+                /*<![CDATA[*/
+                $("#saveBtn").on("click", function () {
+                    var photoRefId = $("#photoRefId").val();
+                    if(photoRefId !== null && photoRefId !== undefined && photoRefId !== '') {
+                        $("#formSubmit").submit();
+                    } else {
+                        alert("请上传图片")
+                    }
+                })
+                /*]]>*/
+            })
+
+            $('#imageUpload').on('filedeleted', function(event, key, jqXHR, data) {
+                $("#photoRefId").val("");
+            });
+
+            $("#imageUpload").fileinput({
+                theme: 'fa',
+                uploadExtraData: {kvId: '10'},
+                uploadAsync: true,
+                showUpload: true,
+                showCaption: true,
+                showPreview: true,
+                showUploadedThumbs: true,
+                fileType: "any",
+                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                overwriteInitial: false,
+                initialPreviewAsData: true,
+                initialPreview: [
+                    protocol + "//" + baseURL + "/image/photography/" + $("#photoRefId").val(),
+                ],
+                initialPreviewConfig: [
+                    {caption: "transport-1.jpg", size: 329892, width: "120px", url: "/image/deletePhotography/" + $("#photoRefId").val(), key: 1},
+                ],
+            }).on("filebatchselected", function (event, files) {
+                $(this).fileinput("upload");
+            })
+                .on("fileuploaded", function (event, data) {
+                    if (data.response) {
+                        /*上传成功时的回调函数*/
+                        $("#photoRefId").val((data.response).imageId);
+                    }
+                });
+        });
+    </script>
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+    <div th:include="common/header"></div>
+
+    <div class="row set-margin-top">
+        <div class="col-md-3">
+            <form class="form-horizontal" id="formSubmit" action="/admin/updatePhotography" method="post">
+                <input type="hidden" id="id" name="id" th:value="${PhotographyDetail.getId()}">
+                <input type="hidden" id="photoRefId" name="photoRefId" th:value="${PhotographyDetail.getPhotoRefId()}">
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+                        <button id="saveBtn" type="button" class="btn btn-primary">保存</button>
+                    </div>
+                    <!--<div class="col-sm-6">
+                        <button id="uploadImageBtn" type="button" class="btn btn-primary">上传图片</button>
+                    </div>-->
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="theme" name="theme" placeholder="主题"
+                               th:value="${PhotographyDetail.getTheme()}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                            <textarea class="form-control" rows="25" id="comments" name="comments"
+                                      placeholder="描述" th:text="${PhotographyDetail.getComments()}"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <!--<div class="preView"><img src="/images/camera.jpeg" alt="image" id="displayImage"></div>
+            <div class="fileSelect"><input type="file" id="image" name="image"/></div>-->
+            <!--<div class="fileButton"><input type="submit" value="上传"/></div>-->
+            <div class="form-group">
+                <div class="file-loading">
+                    <input id="imageUpload" type="file" data-upload-url="/admin/savePhotographyImage">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="common/footer"></div>
+</body>
+
+</html>

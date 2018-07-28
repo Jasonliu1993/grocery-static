@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>摄影分享</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/photography/photography_detail.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+    <div th:include="common/header"></div>
+    <div class="core-area">
+        <div class="large-img">
+            <img th:src="@{'/image/photography/'+ ${PhotographyDetail.data.getPhotoRefId()}}" alt="imageDetail" />
+            <div class="descr">
+                <div class="header" th:text="${PhotographyDetail.data.getTheme()}">
+                    title
+                </div>
+                <div class="content" th:text="${PhotographyDetail.data.getComments()}">
+                    comment
+                </div>
+            </div>
+        </div>
+        <div class="left-button">
+            <a href="#" class="glyphicon glyphicon-menu-left"
+               th:href="@{'/photography/detail/' + ${PhotographyDetail.data.getId() - 1}}" th:if="${PhotographyDetail.data.getId() != 1}"></a>
+        </div>
+        <div class="right-button">
+            <a href="#" class="glyphicon glyphicon-menu-right"
+               th:href="@{'/photography/detail/' + ${PhotographyDetail.data.getId() + 1}}" th:if="${PhotographyDetail.data.getId() != PhotographyDetail.data.getCountRow()}"></a>
+        </div>
+    </div>
+</div>
+<div th:include="common/footer"></div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/js/jquery-3.1.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+</body>
+</html>

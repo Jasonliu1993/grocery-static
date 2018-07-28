@@ -1,0 +1,61 @@
+#指定当前有效的配置文件
+spring:
+  profiles:
+    active: Dev
+
+#应用名字
+  application:
+    name: groceryStatic
+
+---
+#服务注册中心端口号
+server:
+  port: 8781
+
+spring:
+  profiles: Dev
+    #服务注册中心实例的主机名
+
+eureka:
+  instance:
+    hostname: localhost
+
+#服务注册中心的配置内容，指定服务注册中心的位置
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
+---
+#服务注册中心端口号
+server:
+  port: 8782
+
+spring:
+  profiles: Test
+    #服务注册中心实例的主机名
+
+eureka:
+  instance:
+    hostname: localhost
+
+#服务注册中心的配置内容，指定服务注册中心的位置
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8762/eureka/
+
+---
+#服务注册中心端口号
+server:
+  port: 8783
+
+spring:
+  profiles: Prd
+    #服务注册中心实例的主机名
+eureka:
+  instance:
+    hostname: localhost
+
+#服务注册中心的配置内容，指定服务注册中心的位置
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8763/eureka/

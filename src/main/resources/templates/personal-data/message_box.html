@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>个人资料修改</title>
+
+    <!-- Bootstrap -->
+    <!--<link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>-->
+    <link href="/css/common/pagination.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
+    <link href="/css/personal-data/message_box.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link href="/plugins/bootstrap-fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>-->
+    <link href="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/jquerySession.js"></script>
+    <script src="/js/common/common.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/fileinput.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/locales/fr.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/js/locales/es.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-fileinput/themes/fa/theme.js" type="text/javascript"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>-->
+    <script src="/js/bootstrap-3.3.7/js/bootstrap.js" type="text/javascript"></script>
+
+    <script>
+
+    </script>
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+
+    <div th:include="common/header"></div>
+
+    <div class="row set-margin-top">
+        <div class="col-md-2">
+            <div class="set-left">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" th:id="${MessageBoxMenu.getLinkMatching()}"
+                        th:each="MessageBoxMenu,MessageBoxMenuStatus : ${MessageBoxMenus.data}"><a
+                            th:href="@{${MessageBoxMenu.getInterlinkage()}}"
+                            th:text="${MessageBoxMenu.getMenuItemName()}">Home</a></li>
+                    <!--<li role="presentation" class="active"><a href="#">Profile</a></li>
+                    <li role="presentation"><a href="#">Messages</a></li>-->
+                </ul>
+            </div>
+        </div>
+        <input type="hidden" id="id" th:value="${session.User.getPersonalInfo().getAvator()}">
+        <div class="col-md-10">
+            <div class="content" >
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--<input type="hidden" id="currentType" name="currentType" th:value="${CurrentType}">-->
+<div th:include="common/footer"></div>
+
+</body>
+</html>

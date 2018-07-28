@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description"/>
+    <meta name="author" content="Jason"/>
+    <title>留言板</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/common/pagination.css" rel="stylesheet"/>
+    <link href="/css/common/common.css" rel="stylesheet"/>
+    <link href="/css/message-board/message_board_index.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+    <script src="/js/jquery-3.1.1.min.js" type="application/javascript"></script>
+    <script src="/js/common/message-board.js" type="application/javascript"></script>
+
+</head>
+<body class="theme">
+<div class="container-fluid">
+    <div th:include="common/header"></div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-center-block set-margin-top">
+            <div class="border-setting">
+                <div class="jumbotron">
+                    <h2>留言板</h2>
+                    <p th:each="MessageBoardTitle,MessageBoardTitleStat : ${MessageBoardTitle.data}" th:text="${MessageBoardTitle.getContent()}">茫茫人海中，有你有我。</p>
+                    <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+                    <p><a id="modal-127408" class="btn btn-primary btn-lg" href="#leaveMessageModel" role="button"
+                          data-toggle="modal">留言</a></p>
+                </div>
+                <div class="col-md-12">
+
+                    <div class="media set-color" th:each="MessageBoard,MessageBoardStat : ${MessageBoards.data}">
+                        <div class="media-left media-middle">
+                            <a href="#" class="pull-left"><img
+                                    th:src="@{'/image/avator/' + ${MessageBoard.getAvator()}}" alt="avator"
+                                    class="media-object" width="60"/></a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                &nbsp;&nbsp;<span th:text="${MessageBoard.getUserName()}">未知用户</span>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-xs replyButtonClass"
+                                        id="replyButton">
+                                    回复&nbsp;<span class="badge" th:text="${MessageBoard.getSubreplyCount()}">0</span>
+                                    <input type="hidden" id="messageBoardId" th:value="${MessageBoard.getId()}"/>
+                                    <input type="hidden" id="messageBoardUserId"
+                                           th:value="${MessageBoard.getUserid()}"/>
+                                </button>
+                            </h4>
+                            <span th:text="${MessageBoard.getContent()}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="fix"></div>
+            </div>
+            <!--导航条-->
+            <div class="pagination-setting">
+                <div th:include="common/pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--回复弹出框-->
+<div class="modal fade" id="leaveMessageModel" tabindex="-1" role="dialog" aria-labelledby="leaveMessageLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="leave-word-title">留言</h4>
+            </div>
+            <div class="modal-body" th:if="${#strings.isEmpty(session.User)}">请先登录</div>
+            <div class="modal-body" th:if="${!#strings.isEmpty(session.User)}">
+                <form action="/messageBoard/leaveMessage" method="post" id="replyForm">
+                    <div class="form-group">
+                        <label for="replyMessage" class="control-label">内容</label>
+                        <textarea class="form-control" id="replyMessage" name="replyMessage"
+                                  placeholder="请输入内容..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="leaveBtn" th:if="${!#strings.isEmpty(session.User)}">
+                    留言
+                </button>
+                <script>
+                    $("#leaveBtn").on("click", function () {
+                        $("#replyForm").submit();
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--回复留言弹出框-->
+<div class="modal fade bs-example-modal-lg" id="subReplyModel" tabindex="-1" role="dialog"
+     aria-labelledby="subReplyLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">详情</h4>
+            </div>
+            <div class="modal-body">
+                <div class="media master-area">
+
+                </div>
+                <div class="set-margin-top subReply-area">
+
+
+                </div>
+                <div class="set-margin-top reply-area">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveReplyBtn" th:if="${!#strings.isEmpty(session.User)}">回复</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="common/footer"></div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/js/jquery-3.1.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/js/bootstrap-3.3.7/js/bootstrap.js"></script>
+</body>
+</html>
