@@ -1,6 +1,9 @@
 package com.jwebcoder.grocerystatic.controllers;
 
 
+import com.jwebcoder.grocerystatic.domain.NavigatationMenu;
+import com.jwebcoder.grocerystatic.dto.ResponseMessage;
+import com.jwebcoder.grocerystatic.rpc.GroceryMainRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,12 +11,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 /**
  * Created by Jason on 10/10/2017.
  */
 
 @Controller
 public class CoreController {
+
+    @Autowired
+    private GroceryMainRpc groceryMainRpc;
 
     /*@Autowired
     private CustomProperty customProperty;
@@ -31,7 +40,9 @@ public class CoreController {
     private SharingServiceUtility sharingServiceUtility;*/
 
     @GetMapping("/index")
-    public String index(ModelMap modelMap) {
+    public String index(ModelMap modelMap, HttpServletRequest request) {
+        ResponseMessage<List<NavigatationMenu>> nav = groceryMainRpc.getNav(null, request.getRequestURI());
+        modelMap.addAttribute("Nav", nav);
         return "index";
     }
 

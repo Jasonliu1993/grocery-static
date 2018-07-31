@@ -1,11 +1,8 @@
 package com.jwebcoder.grocerystatic.configuration;
 
-import com.jwebcoder.grocerystatic.interceptor.GroceryCoreInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -13,7 +10,6 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.ServletRequestListener;
 
@@ -26,13 +22,6 @@ public class GroceryConfiguration implements WebMvcConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(GroceryConfiguration.class);
 
-    @Autowired
-    private GroceryCoreInterceptor groceryCoreInterceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(groceryCoreInterceptor);
-    }
 
     @Bean
     public ServletRequestListener createServletRequestListener() {
