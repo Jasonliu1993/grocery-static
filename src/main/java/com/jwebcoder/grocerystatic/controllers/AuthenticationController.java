@@ -23,8 +23,8 @@ import java.io.IOException;
 @RequestMapping("/authentication")
 public class AuthenticationController {
 
-    /*@Autowired
-    private IndexService indexService;*/
+//    @Autowired
+//    private IndexService indexService;
 
     @PostMapping("/login")
     public void login(String userNameOrEmail, String password4log, String currentURL4Login, HttpSession session, HttpServletResponse response) throws IOException {
